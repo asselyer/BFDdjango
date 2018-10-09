@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block home %}
+<div style="margin: 0 auto; width: 600px">
+    <br>
+    <div>
+        <a class="btn btn-primary" href="{% url 'posts:post_list' %}">Вернуться</a>
+    </div>
+    <br>
+    <div class="card">
+        <div class="card-header">
+    <h2>{{post.title}}
+        <small>{{post.created_date}}</small>
+
+    </h2>
+                    </div>
+
+            <div class="card-body">
+    <p class="card-text">
+        {{post.body}}
+    </p>
+            </div>
+
+
+
+        <div class="card-footer text-muted">
+                        <div class="container">
+
+            {% if post.comment.all %}
+    <h3 >Комменты ({{post.comment.all|length}})</h3>
+
+            {% for comment in post.comment.all %}
+                 <div class="panel-group">
+                <div class="panel panel-default">
+                <div class="panel-heading" >{{comment.name}}, <small>{{comment.date|timesince}} назад</small></div>
+
+                   <div class="panel-body"> {{comment.text}}</div>
+                </div>
+
+
+                <hr>
+            {% endfor %}
+
+            {%  endif %}
+                                                      </div>
+
+
+        </div>
+
+  </div>
+        <div class="card-footer">
+<h3 style="font-family: 'Century Gothic', sans-serif ">Отправить комментарий</h3>
+             <form method="post" action="">
+                                  {% csrf_token %}
+        {% include 'form_template.html' %}
+                 <input class="btn btn-success" type="submit" value="Отправить">
+             </form>
+
+
+            </div>
+    </div>
+
+</div>
+{% endblock %}
